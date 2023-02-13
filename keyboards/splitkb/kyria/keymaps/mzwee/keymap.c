@@ -19,14 +19,34 @@ enum layers {
     _QWERTY = 0,
     _NAV,
     _SYM,
+    _PGRM,
 };
 
+enum custom_keycodes {
+    PG_ARROW = SAFE_RANGE,
+    PG_CONST,
+    PG_GADD,
+    PG_GBRN,
+    PG_GCHK,
+    PG_GCHKB,
+    PG_GCHKP,
+    PG_GCLN,
+    PG_GCMT,
+    PG_GLOG,
+    PG_GMRG,
+    PG_GPSH,
+    PG_GPUL,
+    PG_GSTH,
+    PG_GSTS,
+    PG_LET,
+};
 
 // Aliases for readability
 #define QWERTY   DF(_QWERTY)
 
 #define SYM      MO(_SYM)
 #define NAV      MO(_NAV)
+#define PGRM     MO(_PGRM)
 
 #define CTL_ESC  MT(MOD_LCTL, KC_ESC)
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
@@ -47,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |Ctrl/Esc|   A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |Ctrl/' "|
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |LShift/(|   Z  |   X  |   C  |   V  |   B  | [ {  |  (   |  |   )  |  ] } |   N  |   M  | ,  < | . >  | /  ? |RShift/)|
+ * |LShift/(|   Z  |   X  |   C  |   V  |   B  | [ {  | Pgrm |  |      |  ] } |   N  |   M  | ,  < | . >  | /  ? |RShift/)|
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      | LGUI | LAlt/| Space| Nav  |  | Sym  | Space| AltGr| RGUI | Menu |
  *                        |      |      | Enter|      |      |  |      |      |      |      |      |
@@ -56,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,  KC_I ,   KC_O ,  KC_P , KC_BSPC,
      CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,  KC_K ,   KC_L ,KC_SCLN,CTL_QUOT,
-     SC_LSPO , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC, KC_LPRN, KC_RPRN, KC_RBRC,  KC_N  ,   KC_M ,KC_COMM, KC_DOT ,KC_SLSH, SC_RSPC,
+     SC_LSPO , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC,  PGRM  , _______, KC_RBRC,  KC_N  ,   KC_M ,KC_COMM, KC_DOT ,KC_SLSH, SC_RSPC,
                                 _______, KC_LGUI, ALT_ENT, KC_SPC ,   NAV  ,   SYM  , KC_SPC , KC_RALT, KC_RGUI, KC_APP
     ),
 
@@ -102,6 +122,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
+/*
+ * Pgrm Layer: Programming macros
+ *
+ * ,-----------------------------------------------------.                              ,-------------------------------------------.
+ * |        |  Git   |  Git   |  Git   |  Git   |  Git   |                              |      |      |      |      |      |        |
+ * |        |checkout|checkout|checkout| branch |  clone |                              |      |      |      |      |      |        |
+ * |        |        |  prev  |   -b   |        |        |                              |      |      |      |      |      |        |  
+ * |--------+--------+--------+--------+--------+--------|                              |------+------+------+------+------+--------|
+ * |        |  Git   |  Git   |  Git   |  Git   |        |                              |      | Const|  Let | Arrow|      |        |
+ * |        |  add   | commit |  push  |  pull  |        |                              |      |      |      |      |      |        |
+ * |--------+--------+--------+--------+--------+--------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * |        |  Git   |  Git   |  Git   |  Git   |        |      |      |  |      |      |      |      |      |      |      |        |
+ * |        |  log   | status |  stash |  merge |        |      |      |  |      |      |      |      |      |      |      |        |
+ * `--------------------------+--------+--------+--------+------+------|  |------+------+------+------+------+----------------------'
+ *                            |        |        |        |      |      |  |      |      |      |      |      |
+ *                            |        |        |        |      |      |  |      |      |      |      |      |
+ *                            `----------------------------------------'  `----------------------------------'
+ */
+    [_PGRM] = LAYOUT(
+      _______, PG_GCHK, PG_GCHKP, PG_GCHKB, PG_GBRN, PG_GCLN,                                     _______,  _______, _______,  _______, _______, _______,
+      _______, PG_GADD,  PG_GCMT,  PG_GPSH, PG_GPUL, _______,                                     _______, PG_CONST,  PG_LET, PG_ARROW, _______, _______,
+      _______, PG_GLOG,  PG_GSTS,  PG_GSTH, PG_GMRG, _______, _______, _______, _______, _______, _______,  _______, _______,  _______, _______, _______,
+                                   _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______
+    ),
+
 // /*
 //  * Layer template
 //  *
@@ -123,6 +168,63 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 //     ),
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        switch (keycode) {
+            case PG_ARROW:
+                SEND_STRING(" => ");
+                return false;
+            case PG_CONST:
+                SEND_STRING("const ");
+                return false;
+            case PG_GADD:
+                SEND_STRING("git add .");
+                return false;
+            case PG_GBRN:
+                SEND_STRING("git branch");
+                return false;
+            case PG_GCHK:
+                SEND_STRING("git checkout ");
+                return false;
+            case PG_GCHKB:
+                SEND_STRING("git checkout -b ");
+                return false;
+            case PG_GCHKP:
+                SEND_STRING("git checkout -");
+                return false;
+            case PG_GCLN:
+                SEND_STRING("git clone ");
+                return false;
+            case PG_GCMT:
+                SEND_STRING("git commit -m \"");
+                return false;
+            case PG_GLOG:
+                SEND_STRING("git log");
+                return false;
+            case PG_GMRG:
+                SEND_STRING("git merge");
+                return false;
+            case PG_GPSH:
+                SEND_STRING("git push");
+                return false;
+            case PG_GPUL:
+                SEND_STRING("git pull");
+                return false;
+            case PG_GSTH:
+                SEND_STRING("git stash");
+                return false;
+            case PG_GSTS:
+                SEND_STRING("git status");
+                return false;
+            case PG_LET:
+                SEND_STRING("let ");
+                return false;
+        }
+    }
+    return true;
+}
+
 
 /* The default OLED and rotary encoder code can be found at the bottom of qmk_firmware/keyboards/splitkb/kyria/rev1/rev1.c
  * These default settings can be overriden by your own settings in your keymap.c
@@ -157,6 +259,9 @@ bool oled_task_user(void) {
                 break;
             case _SYM:
                 oled_write_P(PSTR("Sym\n"), false);
+                break;
+            case _PGRM:
+                oled_write_P(PSTR("Pgrm\n"), false);
                 break;
             default:
                 oled_write_P(PSTR("Undefined\n"), false);
